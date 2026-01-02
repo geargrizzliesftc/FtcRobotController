@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "Blue Launch Auto", group = "Autonomous")
-public class BlueSideLaunchAuto extends LinearOpMode {
+@Autonomous(name = "Red Launch Auto", group = "Autonomous")
+public class RedSideLaunchAuto extends LinearOpMode {
 
     // Drive motors
     DcMotor frontLeft, frontRight, backLeft, backRight;
@@ -59,10 +59,10 @@ public class BlueSideLaunchAuto extends LinearOpMode {
             //sleep(400); // adjust for distance
 
             // 3. Turn to face blue basket
-            frontLeft.setPower(-0.5);
-            backLeft.setPower(-0.5);
-            frontRight.setPower(0.5);
-            backRight.setPower(0.5);
+            frontLeft.setPower(0.5);
+            backLeft.setPower(0.5);
+            frontRight.setPower(-0.5);
+            backRight.setPower(-0.5);
             sleep(245); // adjust for angle
 
             // Stop all movement
@@ -90,10 +90,10 @@ public class BlueSideLaunchAuto extends LinearOpMode {
 
             //below is the code for going to human player
             // 4. Turn 90 degrees to face human player
-            //frontLeft.setPower(-0.5);
-            //backLeft.setPower(-0.5);
-            //frontRight.setPower(0.5);
-            //backRight.setPower(0.5);
+            //frontLeft.setPower(0.5);
+            //backLeft.setPower(0.5);
+            //frontRight.setPower(-0.5);
+            //backRight.setPower(-0.5);
             //sleep(750);
             // 5. go forward towards the human player
             //frontLeft.setPower(0.5);
@@ -112,11 +112,11 @@ public class BlueSideLaunchAuto extends LinearOpMode {
 
             //below is the code for going to park zone ate end of auto period
             // 4. Turn to face blue parking
-            frontLeft.setPower(0.5);
-            backLeft.setPower(0.5);
-            frontRight.setPower(-0.5);
-            backRight.setPower(-0.5);
-            sleep(380); // adjust for angle
+            frontLeft.setPower(-0.5);
+            backLeft.setPower(-0.5);
+            frontRight.setPower(0.5);
+            backRight.setPower(0.5);
+            sleep(340); // adjust for angle
 
             // 5. Move backward off the launch zone
             frontLeft.setPower(-0.5);
@@ -125,13 +125,14 @@ public class BlueSideLaunchAuto extends LinearOpMode {
             backRight.setPower(-0.5);
             sleep(2060); // adjust to clear the triangle
 
-            // 6. Strafe right toward park
-            //frontLeft.setPower(0.5);
-            //backLeft.setPower(-0.5);
-            //frontRight.setPower(-0.5);
-            //backRight.setPower(0.5);
-            // sleep(500); // adjust for distance
+            // 6. Strafe left toward park
+            //frontLeft.setPower(-0.5);
+           // backLeft.setPower(0.5);
+            //frontRight.setPower(0.5);
+            //backRight.setPower(-0.5);
+            //sleep(900); // adjust for distance
             //above is the code for going to park zone ate end of auto period
         }
     }
 }
+

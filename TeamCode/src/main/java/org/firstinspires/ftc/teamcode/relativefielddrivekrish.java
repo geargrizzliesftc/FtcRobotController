@@ -139,13 +139,13 @@ public class relativefielddrivekrish extends OpMode {
         if (gamepad2.x) {
             openServo.setPosition(0.5);
         } else if (gamepad2.y) {
-            openServo.setPosition(0.35);
+            openServo.setPosition(0.27);
         }
 
         if (gamepad2.dpad_left) {
-            archServo.setPosition(0.5);
+            archServo.setPosition(0.45);
         } else if (gamepad2.dpad_right) {
-            archServo.setPosition(0.167.);
+            archServo.setPosition(0.141);
         }
     }
 }

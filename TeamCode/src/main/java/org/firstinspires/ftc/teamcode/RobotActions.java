@@ -35,13 +35,18 @@ public class RobotActions extends RobotHardware {
         flywheel.setVelocity(FLYWHEEL_VELOCITY);
         myOpMode.sleep(1500); // Wait for the flywheel to reach speed
 
-        // --- ADD THIS TELEMETRY BLOCK ---
-        // Log the actual velocity right before the first shot
-        double currentVelocity = flywheel.getVelocity();
-        myOpMode.telemetry.addData("Flywheel Target Velocity", FLYWHEEL_VELOCITY);
-        myOpMode.telemetry.addData("Flywheel Actual Velocity", currentVelocity);
-        myOpMode.telemetry.update();
-        // --- END OF TELEMETRY BLOCK ---
+
+        // --- DIAGNOSTIC SLEEP & TELEMETRY ---
+        // Wait for the flywheel to reach speed, and print telemetry the whole time
+        long startTime = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startTime < 1500) {
+            double currentVelocity = flywheel.getVelocity();
+            myOpMode.telemetry.addData("Flywheel Target Velocity", FLYWHEEL_VELOCITY);
+            myOpMode.telemetry.addData("Flywheel Actual Velocity", currentVelocity);
+            myOpMode.telemetry.update();
+            myOpMode.sleep(50); // Small pause to not spam the controller
+        }
+        // --- END OF DIAGNOSTIC BLOCK ---
 
         // Optional: Add a small extra delay to read the telemetry on the phone screen
         myOpMode.sleep(1000);

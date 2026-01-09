@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "Red Launch Auto", group = "Autonomous")
-public class RedSideLaunchAuto extends LinearOpMode {
+public class RedLaunchAuto extends LinearOpMode {
 
     // Drive motors
     DcMotor frontLeft, frontRight, backLeft, backRight;
@@ -78,9 +78,9 @@ public class RedSideLaunchAuto extends LinearOpMode {
             // 5. Fire 3 balls
             for (int i = 0; i < 3; i++) {
                 gate.setPosition(0.27); // open
-                sleep(400);
+                sleep(300);
                 gate.setPosition(0.5); // close
-                sleep(1500);
+                sleep(1700);
 
 
             }
@@ -116,7 +116,7 @@ public class RedSideLaunchAuto extends LinearOpMode {
             backLeft.setPower(-0.5);
             frontRight.setPower(0.5);
             backRight.setPower(0.5);
-            sleep(340); // adjust for angle
+            sleep(380); // adjust for angle
 
             // 5. Move backward off the launch zone
             frontLeft.setPower(-0.5);

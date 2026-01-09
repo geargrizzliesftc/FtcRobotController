@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "Red Goal Auto", group = "Autonomous")
-public class RedGoalSideLaunchAuto extends LinearOpMode {
+@Autonomous(name = "Blue Launch Auto", group = "Autonomous")
+public class BlueLaunchAuto extends LinearOpMode {
 
     // Drive motors
     DcMotor frontLeft, frontRight, backLeft, backRight;
@@ -44,29 +44,41 @@ public class RedGoalSideLaunchAuto extends LinearOpMode {
 
         if (opModeIsActive()) {
 
-            // 1. Move backward off the launch zone
+            // 1. Move forward off the launch zone
+            frontLeft.setPower(0.5);
+            backLeft.setPower(0.5);
+            frontRight.setPower(0.5);
+            backRight.setPower(0.5);
+            sleep(2300); // adjust to clear the triangle
+
+            // 2. Strafe left toward center
+            //frontLeft.setPower(-0.5);
+            //backLeft.setPower(0.5);
+            //frontRight.setPower(0.5);
+            //backRight.setPower(-0.5);
+            //sleep(400); // adjust for distance
+
+            // 3. Turn to face blue basket
             frontLeft.setPower(-0.5);
             backLeft.setPower(-0.5);
-            frontRight.setPower(-0.5);
-            backRight.setPower(-0.5);
-            sleep(1500); // adjust to clear the triangle
+            frontRight.setPower(0.5);
+            backRight.setPower(0.5);
+            sleep(245); // adjust for angle
 
-
-            // 2.  Stop all movement
+            // Stop all movement
             frontLeft.setPower(0);
             frontRight.setPower(0);
-
             backLeft.setPower(0);
             backRight.setPower(0);
 
-            // 3. Spin up flywheel
+            // 4. Spin up flywheel
             flywheel.setPower(0.8);
-            sleep(1570); // reach speed
+            sleep(1500); // reach speed
 
-            // 4. Fire 3 balls
+            // 5. Fire 3 balls
             for (int i = 0; i < 3; i++) {
                 gate.setPosition(0.27); // open
-                sleep(400);
+                sleep(300);
                 gate.setPosition(0.5); // close
                 sleep(1700);
 
@@ -77,36 +89,50 @@ public class RedGoalSideLaunchAuto extends LinearOpMode {
             flywheel.setPower(0);
 
             //below is the code for going to human player
-            // 5. Turn 90 degrees to face human player
-            //frontLeft.setPower(-0.5);
-            //backLeft.setPower(-0.5);
-            //frontRight.setPower(0.5);
-            //backRight.setPower(0.5);
+            // 4. Turn 90 degrees to face human player
+            //frontLeft.setPower(0.5);
+            //backLeft.setPower(0.5);
+            //frontRight.setPower(-0.5);
+            //backRight.setPower(-0.5);
             //sleep(750);
-            // 6. go forward towards the human player
+            // 5. go forward towards the human player
             //frontLeft.setPower(0.5);
             //backLeft.setPower(0.5);
             //frontRight.setPower(0.5);
             //backRight.setPower(0.5);
-            //sleep(2000);
+            //sleep(1800);
 
-            // 7. Stop all movement
+            // 6. Stop all movement
             //frontLeft.setPower(0);
             //frontRight.setPower(0);
             //backLeft.setPower(0);
             //backRight.setPower(0);
             //above is the code for going to human player
 
-            //below is the code for going to park zone ate end of auto period
 
-            //5. Move onto the launch zone from sweet spot
+            //below is the code for going to park zone ate end of auto period
+            // 4. Turn to face blue parking
             frontLeft.setPower(0.5);
             backLeft.setPower(0.5);
-            frontRight.setPower(0.5);
-            backRight.setPower(0.5);
-            sleep(1560); // adjust to clear the triangle
+            frontRight.setPower(-0.5);
+            backRight.setPower(-0.5);
+            sleep(380); // adjust for angle
 
+            // 5. Move backward off the launch zone
+            frontLeft.setPower(-0.5);
+            backLeft.setPower(-0.5);
+            frontRight.setPower(-0.5);
+            backRight.setPower(-0.5);
+            sleep(2060); // adjust to clear the triangle
+
+            // 6. Strafe left toward park
+            //frontLeft.setPower(-0.5);
+            // backLeft.setPower(0.5);
+            //frontRight.setPower(0.5);
+            //backRight.setPower(-0.5);
+            //sleep(900); // adjust for distance
             //above is the code for going to park zone ate end of auto period
         }
     }
 }
+

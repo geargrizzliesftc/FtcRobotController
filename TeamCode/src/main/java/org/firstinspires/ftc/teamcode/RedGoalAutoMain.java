@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 @Autonomous(name = "Blue Launch Auto v2 (Refactored)", group = "Autonomous")
-public class BlueSideLaunchAuto2 extends LinearOpMode {
+public class RedGoalAutoMain extends LinearOpMode {
 
     // Create an instance of our robot actions class.
     // This single object will control the robot.

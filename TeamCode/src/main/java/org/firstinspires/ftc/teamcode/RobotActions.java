@@ -12,7 +12,7 @@ public class RobotActions extends RobotHardware {
     private LinearOpMode myOpMode; // Reference to the OpMode that is using this class
 
     // --- CONSTANTS ---
-    public static final double FLYWHEEL_VELOCITY = 1600; // TUNE THIS VALUE
+    public static final double FLYWHEEL_VELOCITY = 600; // TUNE THIS VALUE
     public static final double GATE_OPEN_POS   = 0.27;
     public static final double GATE_CLOSED_POS = 0.5;
 

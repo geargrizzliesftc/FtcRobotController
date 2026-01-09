@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "Blue Goal Auto", group = "Autonomous")
-public class BlueGoalSideLaunchAuto extends LinearOpMode {
+public class BlueGoalAuto extends LinearOpMode {
 
     // Drive motors
     DcMotor frontLeft, frontRight, backLeft, backRight;

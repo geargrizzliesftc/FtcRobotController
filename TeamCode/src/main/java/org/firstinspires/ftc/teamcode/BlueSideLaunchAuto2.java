@@ -48,7 +48,7 @@ public class BlueSideLaunchAuto2 extends LinearOpMode {
             robot.shootBalls(3, RobotActions.FLYWHEEL_VELOCITY);
 
             // Step 4: Turn to face the parking line
-            robot.turn(-TURN_SPEED, TURN_TO_PARK_MS); // Note: negative power to turn the other way
+             robot.turn(-TURN_SPEED, TURN_TO_PARK_MS); // Note: negative power to turn the other way
 
             // Step 5: Drive backward to park over the line
             robot.driveStraight(-DRIVE_SPEED, PARK_DRIVE_MS);

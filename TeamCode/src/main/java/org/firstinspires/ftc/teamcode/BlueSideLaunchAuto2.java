@@ -12,7 +12,7 @@ public class BlueSideLaunchAuto2 extends LinearOpMode {
 
     // --- CONSTANTS FOR THIS SPECIFIC PATH ---
     private static final double DRIVE_SPEED = 0.5;
-    private static final double TURN_SPEED  = 0.5;
+    private static final double TURN_SPEED = 0.5;
 
     private static final long DRIVE_FORWARD_MS = 2300;
     private static final long TURN_TO_BASKET_MS = 245;
@@ -45,7 +45,7 @@ public class BlueSideLaunchAuto2 extends LinearOpMode {
             robot.turn(TURN_SPEED, TURN_TO_BASKET_MS);
 
             // Step 3: Shoot 3 balls
-            robot.shootBalls(3);
+            robot.shootBalls(3, RobotActions.FLYWHEEL_VELOCITY);
 
             // Step 4: Turn to face the parking line
             robot.turn(-TURN_SPEED, TURN_TO_PARK_MS); // Note: negative power to turn the other way

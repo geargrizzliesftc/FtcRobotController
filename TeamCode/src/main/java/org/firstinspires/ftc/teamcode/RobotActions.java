@@ -13,12 +13,14 @@ public class RobotActions extends RobotHardware {
 
     // --- CONSTANTS ---
     public static final double FLYWHEEL_VELOCITY = 1600; // TUNE THIS VALUE
-    public static final double GATE_OPEN_POS   = 0.27;
+    public static final double GATE_OPEN_POS = 0.27;
     public static final double GATE_CLOSED_POS = 0.5;
 
     /**
      * Constructor for the RobotActions class.
-     * @param opMode The LinearOpMode that is using these actions (needed for sleep() and opModeIsActive()).
+     * 
+     * @param opMode The LinearOpMode that is using these actions (needed for
+     *               sleep() and opModeIsActive()).
      */
     public RobotActions(LinearOpMode opMode) {
         myOpMode = opMode;
@@ -27,37 +29,51 @@ public class RobotActions extends RobotHardware {
     // --- HIGH-LEVEL ACTIONS ---
 
     /**
-     * Spins up the flywheel, shoots a specified number of balls, and stops the flywheel.
-     * @param numberOfBalls The number of balls to shoot.
+     * Spins up the flywheel, shoots a specified number of balls, and stops the
+     * flywheel.
+     * 
+     * @param numberOfBalls  The number of balls to shoot.
+     * @param targetVelocity The target velocity for the flywheel.
      */
-    public void shootBalls(int numberOfBalls) {
+    public void shootBalls(int numberOfBalls, double targetVelocity) {
         // Spin up flywheel to the target velocity
-        flywheel.setVelocity(FLYWHEEL_VELOCITY);
-        myOpMode.sleep(1500); // Wait for the flywheel to reach speed
-
-
-        // --- DIAGNOSTIC SLEEP & TELEMETRY ---
-        // Wait for the flywheel to reach speed, and print telemetry the whole time
-        long startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startTime < 1500) {
-            double currentVelocity = flywheel.getVelocity();
-            myOpMode.telemetry.addData("Flywheel Target Velocity", FLYWHEEL_VELOCITY);
-            myOpMode.telemetry.addData("Flywheel Actual Velocity", currentVelocity);
-            myOpMode.telemetry.update();
-            myOpMode.sleep(50); // Small pause to not spam the controller
-        }
-        // --- END OF DIAGNOSTIC BLOCK ---
-
-        // Optional: Add a small extra delay to read the telemetry on the phone screen
-        myOpMode.sleep(1000);
+        flywheel.setVelocity(targetVelocity);
 
         for (int i = 0; i < numberOfBalls; i++) {
-            if (!myOpMode.opModeIsActive()) break; // Exit if OpMode is stopped
+            if (!myOpMode.opModeIsActive())
+                break;
 
+            // --- VELOCITY CHECK ---
+            // Ensure flywheel is at target velocity before EACH shot (initial and recovery)
+            long checkStart = System.currentTimeMillis();
+            // Wait up to 1.5 seconds for velocity to recover/reach target
+            while (myOpMode.opModeIsActive() && (System.currentTimeMillis() - checkStart < 1500)) {
+                double currentVelocity = flywheel.getVelocity();
+
+                // Show telemetry status
+                myOpMode.telemetry.addData("Shooting Ball", i + 1);
+                myOpMode.telemetry.addData("Target Velocity", targetVelocity);
+                myOpMode.telemetry.addData("Actual Velocity", currentVelocity);
+                myOpMode.telemetry.update();
+
+                // Ready to shoot if within 5% of target
+                if (currentVelocity >= targetVelocity * 0.95) {
+                    break;
+                }
+                myOpMode.sleep(20);
+            }
+
+            // Stabilization delay (optional but good for consistency)
+            myOpMode.sleep(100);
+
+            // FIRE
             gate.setPosition(GATE_OPEN_POS);
             myOpMode.sleep(400);
             gate.setPosition(GATE_CLOSED_POS);
-            myOpMode.sleep(750); // Shorter, consistent wait for speed recovery
+
+            // Note: removed the fixed myOpMode.sleep(750) here.
+            // The velocity check at the start of the next loop iteration handles recovery
+            // time.
         }
 
         flywheel.setVelocity(0); // Stop the flywheel
@@ -67,11 +83,13 @@ public class RobotActions extends RobotHardware {
 
     /**
      * Drives the robot straight forward or backward for a given time.
-     * @param power The power to set the motors (-1.0 to 1.0).
+     * 
+     * @param power  The power to set the motors (-1.0 to 1.0).
      * @param timeMs The duration of the movement in milliseconds.
      */
     public void driveStraight(double power, long timeMs) {
-        if (!myOpMode.opModeIsActive()) return;
+        if (!myOpMode.opModeIsActive())
+            return;
         setDriveMotorPower(power);
         myOpMode.sleep(timeMs);
         stopDriving();
@@ -79,11 +97,14 @@ public class RobotActions extends RobotHardware {
 
     /**
      * Turns the robot on the spot for a given time.
-     * @param power The power for turning. Positive power turns right, negative turns left.
+     * 
+     * @param power  The power for turning. Positive power turns right, negative
+     *               turns left.
      * @param timeMs The duration of the turn in milliseconds.
      */
     public void turn(double power, long timeMs) {
-        if (!myOpMode.opModeIsActive()) return;
+        if (!myOpMode.opModeIsActive())
+            return;
         frontLeft.setPower(-power);
         backLeft.setPower(-power);
         frontRight.setPower(power);
@@ -101,6 +122,7 @@ public class RobotActions extends RobotHardware {
 
     /**
      * Private helper method to set power for all four drive motors at once.
+     * 
      * @param power The power to set for each drive motor.
      */
     private void setDriveMotorPower(double power) {

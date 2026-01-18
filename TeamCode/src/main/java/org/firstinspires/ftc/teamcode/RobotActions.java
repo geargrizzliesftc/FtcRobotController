@@ -70,10 +70,7 @@ public class RobotActions extends RobotHardware {
             gate.setPosition(GATE_OPEN_POS);
             myOpMode.sleep(400);
             gate.setPosition(GATE_CLOSED_POS);
-
-            // Note: removed the fixed myOpMode.sleep(750) here.
-            // The velocity check at the start of the next loop iteration handles recovery
-            // time.
+            myOpMode.sleep(300); // Allow time for the gate to fully close
         }
 
         flywheel.setVelocity(0); // Stop the flywheel

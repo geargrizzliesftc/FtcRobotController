@@ -136,7 +136,7 @@ public class relativefielddrivekrish extends OpMode {
 
         if (gamepad2.dpad_left) {
             // Spin motor 60%
-            SkyMotor.setPower(0.6);
+            SkyMotor.setPower(0.7);
         } else if (gamepad2.dpad_right) {
             // Spin motor power 100%
             SkyMotor.setPower(1);

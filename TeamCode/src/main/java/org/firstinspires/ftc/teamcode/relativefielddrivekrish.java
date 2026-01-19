@@ -128,14 +128,23 @@ public class relativefielddrivekrish extends OpMode {
         backRightDrive.setPower(backRightPower);
 
         if (gamepad2.dpad_up) {
-            // Spin motor forward
+            // Spin motor forward(80%)
             SkyMotor.setPower(0.80);
         } else if (gamepad2.dpad_down) {
-            // Stop the motor
+            // Stop the motor(0%)
             SkyMotor.setPower(0.0);
         }
 
+        if (gamepad2.dpad_left) {
+            // Spin motor 60%
+            SkyMotor.setPower(0.7);
+        } else if (gamepad2.dpad_right) {
+            // Spin motor power 100%
+            SkyMotor.setPower(0.95);
+        }
+
         telemetry.addData("Motor Power", SkyMotor.getPower());
+        telemetry.addData("Motor Encoder", SkyMotor.getVelocity());
         telemetry.update();
         if (gamepad2.x) {
             openServo.setPosition(0.5);

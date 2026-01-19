@@ -49,7 +49,7 @@ public class BlueGoalSideLaunchAuto extends LinearOpMode {
             backLeft.setPower(-0.5);
             frontRight.setPower(-0.5);
             backRight.setPower(-0.5);
-            sleep(1500); // adjust to clear the triangle
+            sleep(1250); // adjust to clear the triangle
 
 
             // 2.  Stop all movement
@@ -60,7 +60,7 @@ public class BlueGoalSideLaunchAuto extends LinearOpMode {
             backRight.setPower(0);
 
             // 3. Spin up flywheel
-            flywheel.setPower(0.8);
+            flywheel.setPower(0.73);
             sleep(1570); // reach speed
 
             // 4. Fire 3 balls
@@ -68,7 +68,7 @@ public class BlueGoalSideLaunchAuto extends LinearOpMode {
                 gate.setPosition(0.27); // open
                 sleep(400);
                 gate.setPosition(0.5); // close
-                sleep(1700);
+                sleep(2000);
 
 
             }
@@ -100,11 +100,11 @@ public class BlueGoalSideLaunchAuto extends LinearOpMode {
             //below is the code for going to park zone ate end of auto period
 
              //5. Move onto the launch zone from sweet spot
-            frontLeft.setPower(0.5);
+            frontLeft.setPower(-0.5);
             backLeft.setPower(0.5);
             frontRight.setPower(0.5);
-            backRight.setPower(0.5);
-            sleep(1560); // adjust to clear the triangle
+            backRight.setPower(-0.5);
+            sleep(1000); // adjust to clear the triangle
 
             //above is the code for going to park zone ate end of auto period
         }

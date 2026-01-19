@@ -42,7 +42,7 @@ public class BlueGoalSideLaunchAuto extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Initial states
-            flywheel.setPower(0.69);
+            flywheel.setPower(0.72);
             gate.setPosition(0.5); // closed
 
 
@@ -62,7 +62,7 @@ public class BlueGoalSideLaunchAuto extends LinearOpMode {
             backRight.setPower(0);
 
             // 3. Spin up flywheel
-            flywheel.setPower(0.69);
+            flywheel.setPower(0.72);
             sleep(1570); // reach speed
 
             // 4. Fire 3 balls

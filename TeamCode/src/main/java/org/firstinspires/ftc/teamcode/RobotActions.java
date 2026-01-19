@@ -12,8 +12,8 @@ public class RobotActions extends RobotHardware {
     private LinearOpMode myOpMode; // Reference to the OpMode that is using this class
 
     // --- CONSTANTS ---
-    public static final double FLYWHEEL_VELOCITY = 1600; // TUNE THIS VALUE
-    public static final double GATE_OPEN_POS = 0.27;
+    public static final double FLYWHEEL_VELOCITY = 1900; // TUNE THIS VALUE
+    public static final double GATE_OPEN_POS = 0.25;
     public static final double GATE_CLOSED_POS = 0.5;
 
     /**
@@ -43,34 +43,13 @@ public class RobotActions extends RobotHardware {
             if (!myOpMode.opModeIsActive())
                 break;
 
-            // --- VELOCITY CHECK ---
-            // Ensure flywheel is at target velocity before EACH shot (initial and recovery)
-            long checkStart = System.currentTimeMillis();
-            // Wait up to 1.5 seconds for velocity to recover/reach target
-            while (myOpMode.opModeIsActive() && (System.currentTimeMillis() - checkStart < 1500)) {
-                double currentVelocity = flywheel.getVelocity();
-
-                // Show telemetry status
-                myOpMode.telemetry.addData("Shooting Ball", i + 1);
-                myOpMode.telemetry.addData("Target Velocity", targetVelocity);
-                myOpMode.telemetry.addData("Actual Velocity", currentVelocity);
-                myOpMode.telemetry.update();
-
-                // Ready to shoot if within 5% of target
-                if (currentVelocity >= targetVelocity * 0.95) {
-                    break;
-                }
-                myOpMode.sleep(20);
-            }
-
-            // Stabilization delay (optional but good for consistency)
-            myOpMode.sleep(100);
+            waitForFlywheelVelocity(targetVelocity, i + 1);
 
             // FIRE
             gate.setPosition(GATE_OPEN_POS);
-            myOpMode.sleep(400);
+            myOpMode.sleep(500);
             gate.setPosition(GATE_CLOSED_POS);
-            myOpMode.sleep(300); // Allow time for the gate to fully close
+            myOpMode.sleep(2000); // Allow time for the gate to fully close
         }
 
         flywheel.setVelocity(0); // Stop the flywheel
@@ -118,7 +97,35 @@ public class RobotActions extends RobotHardware {
     }
 
     /**
-     * Private helper method to set power for all four drive motors at once.
+     * Private helper to wait for the flywheel to reach the target velocity.
+     * 
+     * @param targetVelocity The target velocity to reach.
+     * @param ballNumber     The current ball number (for telemetry).
+     */
+    private void waitForFlywheelVelocity(double targetVelocity, int ballNumber) {
+        long checkStart = System.currentTimeMillis();
+        // Wait up to 1.5 seconds for velocity to recover/reach target
+        while (myOpMode.opModeIsActive() && (System.currentTimeMillis() - checkStart < 1500)) {
+            double currentVelocity = flywheel.getVelocity();
+
+            // Show telemetry status
+            myOpMode.telemetry.addData("Shooting Ball", ballNumber);
+            myOpMode.telemetry.addData("Target Velocity", targetVelocity);
+            myOpMode.telemetry.addData("Actual Velocity", currentVelocity);
+            myOpMode.telemetry.update();
+
+            // Ready to shoot if within 2% of target
+            if (currentVelocity >= targetVelocity * 0.98) {
+                break;
+            }
+            myOpMode.sleep(20);
+        }
+        // Stabilization delay
+        myOpMode.sleep(250);
+    }
+
+    /**
+     * private helper method to set power for all four drive motors at once.
      * 
      * @param power The power to set for each drive motor.
      */

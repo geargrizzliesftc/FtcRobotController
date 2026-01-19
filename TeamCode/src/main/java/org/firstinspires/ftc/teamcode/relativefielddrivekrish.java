@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -60,7 +61,7 @@ public class relativefielddrivekrish extends OpMode {
     DcMotor frontRightDrive;
     DcMotor backLeftDrive;
     DcMotor backRightDrive;
-    DcMotor SkyMotor;
+    DcMotorEx SkyMotor;
     Servo openServo;
     Servo archServo;
     // This declares the IMU needed to get the current direction the robot is facing
@@ -72,7 +73,7 @@ public class relativefielddrivekrish extends OpMode {
         frontRightDrive = hardwareMap.get(DcMotor.class, "front_right_drive");
         backLeftDrive = hardwareMap.get(DcMotor.class, "back_left_drive");
         backRightDrive = hardwareMap.get(DcMotor.class, "back_right_drive");
-        SkyMotor = hardwareMap.get(DcMotor.class, "sky_motor");
+        SkyMotor = hardwareMap.get(DcMotorEx.class, "sky_motor");
         openServo = hardwareMap.get(Servo.class, "servo_open");
         archServo = hardwareMap.get(Servo.class, "servo_arch");
         // We set the left motors in reverse which is needed for drive trains where the left

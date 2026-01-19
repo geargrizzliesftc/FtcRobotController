@@ -49,7 +49,7 @@ public class BlueGoalSideLaunchAuto extends LinearOpMode {
             backLeft.setPower(-0.5);
             frontRight.setPower(-0.5);
             backRight.setPower(-0.5);
-            sleep(1250); // adjust to clear the triangle
+            sleep(1200); // adjust to clear the triangle
 
 
             // 2.  Stop all movement

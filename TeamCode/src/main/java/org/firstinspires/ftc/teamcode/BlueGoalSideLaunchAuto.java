@@ -33,16 +33,18 @@ public class BlueGoalSideLaunchAuto extends LinearOpMode {
         backRight.setDirection(DcMotor.Direction.FORWARD);
         gate.setDirection(Servo.Direction.REVERSE);
 
-        // Initial states
-        flywheel.setPower(0.7);
-        gate.setPosition(0.5); // closed
+
 
         telemetry.addLine("Ready to move and shoot");
         telemetry.update();
 
         waitForStart();
-
         if (opModeIsActive()) {
+
+            // Initial states
+            flywheel.setPower(0.69);
+            gate.setPosition(0.5); // closed
+
 
             // 1. Move backward off the launch zone
             frontLeft.setPower(-0.5);

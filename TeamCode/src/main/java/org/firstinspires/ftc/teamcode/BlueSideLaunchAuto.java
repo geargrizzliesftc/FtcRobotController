@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@SuppressWarnings("unused")
 @Autonomous(name = "Blue Launch Auto (Refactored)", group = "Autonomous")
 public class BlueSideLaunchAuto extends LinearOpMode {
 

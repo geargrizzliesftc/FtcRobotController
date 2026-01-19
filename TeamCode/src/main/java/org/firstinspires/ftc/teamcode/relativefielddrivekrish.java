@@ -53,6 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  *
  */
+@SuppressWarnings("unused")
 @TeleOp(name = "Robot: Field Relative Mecanum Drive", group = "Robot")
 //@Disabled
 public class relativefielddrivekrish extends OpMode {

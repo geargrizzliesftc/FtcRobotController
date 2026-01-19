@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * This class contains reusable robot actions (helper methods).
@@ -9,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 public class RobotActions extends RobotHardware {
 
-    private LinearOpMode myOpMode; // Reference to the OpMode that is using this class
+    private final LinearOpMode myOpMode; // Reference to the OpMode that is using this class
 
     // --- CONSTANTS ---
     public static final double FLYWHEEL_VELOCITY = 1900; // TUNE THIS VALUE

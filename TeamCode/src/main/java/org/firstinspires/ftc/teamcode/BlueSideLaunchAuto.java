@@ -1,137 +1,81 @@
 package org.firstinspires.ftc.teamcode;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "Blue Launch Auto", group = "Autonomous")
+@Autonomous(name = "Blue Launch Auto (Refactored)", group = "Autonomous")
 public class BlueSideLaunchAuto extends LinearOpMode {
 
-    // Drive motors
-    DcMotor frontLeft, frontRight, backLeft, backRight;
+    // Create an instance of our robot actions class.
+    // This single object will control the robot.
+    RobotActions robot;
 
-    // Flywheel and gate
+    // --- CONSTANTS FOR THIS SPECIFIC PATH ---
+    private static final double DRIVE_SPEED = 0.5;
+    private static final double TURN_SPEED = 0.5;
+
+    private static final long DRIVE_FORWARD_MS = 2300;
+    private static final long TURN_TO_BASKET_MS = 200;
+    private static final long TURN_TO_PARK_MS = 380;
+    private static final long PARK_DRIVE_MS = 2060;
+
     DcMotor flywheel;
     Servo gate;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // Hardware mapping
-        frontLeft = hardwareMap.get(DcMotor.class, "front_left_drive");
-        frontRight = hardwareMap.get(DcMotor.class, "front_right_drive");
-        backLeft = hardwareMap.get(DcMotor.class, "back_left_drive");
-        backRight = hardwareMap.get(DcMotor.class, "back_right_drive");
-
+        // --- INITIALIZATION ---
+        // Create and initialize the robot object.
         flywheel = hardwareMap.get(DcMotor.class, "sky_motor");
         gate = hardwareMap.get(Servo.class, "servo_open");
 
-        // Set motor directions
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
-        backRight.setDirection(DcMotor.Direction.FORWARD);
-        gate.setDirection(Servo.Direction.REVERSE);
+        robot = new RobotActions(this);
+        robot.init(hardwareMap);
 
-        // Initial states
-        flywheel.setPower(0.7);
-        gate.setPosition(0.5); // closed
+        // Set the initial position of the gate.
+        robot.gate.setPosition(RobotActions.GATE_CLOSED_POS);
 
-        telemetry.addLine("Ready to move and shoot");
+        telemetry.addLine("Robot Initialized. Ready for Blue Side.");
         telemetry.update();
+
+        // Initial states - NOTE: Do not set motor power during init!
+        // flywheel.setPower(0.7); // ILLEGAL: Moving motors during init
+        // gate.setPosition(0.5); // Redundant: Already set above via
+        // robot.gate.setPosition
 
         waitForStart();
 
+        // --- AUTONOMOUS ROUTINE ---
         if (opModeIsActive()) {
 
-            // 1. Move forward off the launch zone
-            frontLeft.setPower(0.5);
-            backLeft.setPower(0.5);
-            frontRight.setPower(0.5);
-            backRight.setPower(0.5);
-            sleep(2300); // adjust to clear the triangle
+            // Step 1: Drive forward off the launch wall
+            robot.driveStraight(DRIVE_SPEED, DRIVE_FORWARD_MS);
 
-            // 2. Strafe left toward center
-            //frontLeft.setPower(-0.5);
-            //backLeft.setPower(0.5);
-            //frontRight.setPower(0.5);
-            //backRight.setPower(-0.5);
-            //sleep(400); // adjust for distance
+            // Step 2: Turn to face the goal
+            robot.turn(TURN_SPEED, TURN_TO_BASKET_MS);
 
-            // 3. Turn to face blue basket
-            frontLeft.setPower(-0.5);
-            backLeft.setPower(-0.5);
-            frontRight.setPower(0.5);
-            backRight.setPower(0.5);
-            sleep(245); // adjust for angle
+            // Step 3: Shoot 3 balls
+            robot.shootBalls(3, RobotActions.FLYWHEEL_VELOCITY);
 
-            // Stop all movement
-            frontLeft.setPower(0);
-            frontRight.setPower(0);
-            backLeft.setPower(0);
-            backRight.setPower(0);
+            // Step 4: Turn to face away from the goal (align with return path)
+            robot.turn(-TURN_SPEED, TURN_TO_PARK_MS);
 
-            // 4. Spin up flywheel
-            flywheel.setPower(0.8);
-            sleep(1500); // reach speed
+            // Step 5: Drive backward PARTWAY towards the start line
+            // (Reduced from 2060ms to ~1400ms to stop before the wall)
+            robot.driveStraight(-DRIVE_SPEED, 1400);
 
-            // 5. Fire 3 balls
-            for (int i = 0; i < 3; i++) {
-                gate.setPosition(0.27); // open
-                sleep(400);
-                gate.setPosition(0.5); // close
-                sleep(1500);
+            // Step 6: Turn LEFT (90 degrees relative to current path)
+            // Note: Positive power turns right, Negative turns left.
+            // We need to verify 90 deg timing, starting with approx 600ms?
+            robot.turn(-TURN_SPEED, 600);
 
+            // Step 7: Drive Forward to clear the zone
+            robot.driveStraight(DRIVE_SPEED, 800);
 
-            }
-
-            // Stop flywheel
-            flywheel.setPower(0);
-
-            //below is the code for going to human player
-            // 4. Turn 90 degrees to face human player
-            //frontLeft.setPower(-0.5);
-            //backLeft.setPower(-0.5);
-            //frontRight.setPower(0.5);
-            //backRight.setPower(0.5);
-            //sleep(750);
-            // 5. go forward towards the human player
-            //frontLeft.setPower(0.5);
-            //backLeft.setPower(0.5);
-            //frontRight.setPower(0.5);
-            //backRight.setPower(0.5);
-            //sleep(1800);
-
-            // 6. Stop all movement
-            //frontLeft.setPower(0);
-            //frontRight.setPower(0);
-            //backLeft.setPower(0);
-            //backRight.setPower(0);
-            //above is the code for going to human player
-
-
-            //below is the code for going to park zone ate end of auto period
-            // 4. Turn to face blue parking
-            frontLeft.setPower(0.5);
-            backLeft.setPower(0.5);
-            frontRight.setPower(-0.5);
-            backRight.setPower(-0.5);
-            sleep(380); // adjust for angle
-
-            // 5. Move backward off the launch zone
-            frontLeft.setPower(-0.5);
-            backLeft.setPower(-0.5);
-            frontRight.setPower(-0.5);
-            backRight.setPower(-0.5);
-            sleep(2060); // adjust to clear the triangle
-
-            // 6. Strafe right toward park
-            //frontLeft.setPower(0.5);
-            //backLeft.setPower(-0.5);
-            //frontRight.setPower(-0.5);
-            //backRight.setPower(0.5);
-            // sleep(500); // adjust for distance
-            //above is the code for going to park zone ate end of auto period
+            sleep(2000); // Verify servo position before OpMode ends
         }
     }
 }

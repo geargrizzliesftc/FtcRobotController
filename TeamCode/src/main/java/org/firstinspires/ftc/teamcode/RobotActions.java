@@ -90,6 +90,26 @@ public class RobotActions extends RobotHardware {
     }
 
     /**
+     * Strafes the robot (moves sideways) for a given time.
+     *
+     * @param power  The power for strafing. Positive power strafes right, negative
+     *               strafes left.
+     * @param timeMs The duration of the strafe in milliseconds.
+     */
+    public void strafe(double power, long timeMs) {
+        if (!myOpMode.opModeIsActive())
+            return;
+        // Strafe Right: FL+, FR-, BL-, BR+
+        // Strafe Left: FL-, FR+, BL+, BR-
+        frontLeft.setPower(power);
+        backLeft.setPower(-power);
+        frontRight.setPower(-power);
+        backRight.setPower(power);
+        myOpMode.sleep(timeMs);
+        stopDriving();
+    }
+
+    /**
      * Stops all four drive motors.
      */
     public void stopDriving() {

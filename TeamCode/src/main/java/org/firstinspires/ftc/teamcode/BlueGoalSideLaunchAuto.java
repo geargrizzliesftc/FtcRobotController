@@ -1,114 +1,48 @@
 package org.firstinspires.ftc.teamcode;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name = "Blue Goal Auto", group = "Autonomous")
+@Autonomous(name = "Blue Goal Auto (Refactored)", group = "Autonomous")
 public class BlueGoalSideLaunchAuto extends LinearOpMode {
 
-    // Drive motors
-    DcMotor frontLeft, frontRight, backLeft, backRight;
-
-    // Flywheel and gate
-    DcMotor flywheel;
-    Servo gate;
+    // Use RobotActions for all hardware control
+    RobotActions robot;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // Hardware mapping
-        frontLeft = hardwareMap.get(DcMotor.class, "front_left_drive");
-        frontRight = hardwareMap.get(DcMotor.class, "front_right_drive");
-        backLeft = hardwareMap.get(DcMotor.class, "back_left_drive");
-        backRight = hardwareMap.get(DcMotor.class, "back_right_drive");
+        // --- INITIALIZATION ---
+        robot = new RobotActions(this);
+        robot.init(hardwareMap);
 
-        flywheel = hardwareMap.get(DcMotor.class, "sky_motor");
-        gate = hardwareMap.get(Servo.class, "servo_open");
+        // Ensure gate is closed for holding the pre-loaded ring/ball
+        robot.gate.setPosition(RobotActions.GATE_CLOSED_POS);
 
-        // Set motor directions
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
-        backRight.setDirection(DcMotor.Direction.FORWARD);
-        gate.setDirection(Servo.Direction.REVERSE);
-
-
-
-        telemetry.addLine("Ready to move and shoot");
+        telemetry.addLine("Ready to move and shoot (Refactored)");
         telemetry.update();
 
         waitForStart();
+
         if (opModeIsActive()) {
 
-            // Initial states
-            flywheel.setPower(0.72);
-            gate.setPosition(0.5); // closed
-
-
             // 1. Move backward off the launch zone
-            frontLeft.setPower(-0.5);
-            backLeft.setPower(-0.5);
-            frontRight.setPower(-0.5);
-            backRight.setPower(-0.5);
-            sleep(1200); // adjust to clear the triangle
+            // Original: Power -0.5 for 1200ms
+            robot.driveStraight(-0.5, 1200);
 
+            // 2. Stop all movement (handled by driveStraight, but conceptually here)
 
-            // 2.  Stop all movement
-            frontLeft.setPower(0);
-            frontRight.setPower(0);
+            // 3. Spin up flywheel and Fire 3 balls
+            // Original: Power 0.72, sleep 1570, then shoot loop.
+            // New: Uses encoder-based velocity from RobotActions.
+            robot.shootBalls(3, RobotActions.FLYWHEEL_VELOCITY);
 
-            backLeft.setPower(0);
-            backRight.setPower(0);
+            // 4. Move onto the launch zone from sweet spot (Park)
+            // Original: Strafe Left (FL -0.5, BL 0.5, FR 0.5, BR -0.5) for 1300ms
+            robot.strafe(-0.5, 1300);
 
-            // 3. Spin up flywheel
-            flywheel.setPower(0.72);
-            sleep(1570); // reach speed
-
-            // 4. Fire 3 balls
-            for (int i = 0; i < 3; i++) {
-                gate.setPosition(0.27); // open
-                sleep(400);
-                gate.setPosition(0.5); // close
-                sleep(2000);
-
-
-            }
-
-            // Stop flywheel
-            flywheel.setPower(0);
-
-            //below is the code for going to human player
-            // 5. Turn 90 degrees to face human player
-            //frontLeft.setPower(-0.5);
-            //backLeft.setPower(-0.5);
-            //frontRight.setPower(0.5);
-            //backRight.setPower(0.5);
-            //sleep(750);
-            // 6. go forward towards the human player
-            //frontLeft.setPower(0.5);
-            //backLeft.setPower(0.5);
-            //frontRight.setPower(0.5);
-            //backRight.setPower(0.5);
-            //sleep(2000);
-
-            // 7. Stop all movement
-            //frontLeft.setPower(0);
-            //frontRight.setPower(0);
-            //backLeft.setPower(0);
-            //backRight.setPower(0);
-            //above is the code for going to human player
-
-            //below is the code for going to park zone ate end of auto period
-
-             //5. Move onto the launch zone from sweet spot
-            frontLeft.setPower(-0.5);
-            backLeft.setPower(0.5);
-            frontRight.setPower(0.5);
-            backRight.setPower(-0.5);
-            sleep(1300); // adjust to clear the triangle
-
-            //above is the code for going to park zone ate end of auto period
+            // End of auto
+            sleep(1000);
         }
     }
 }

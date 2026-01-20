@@ -15,6 +15,23 @@ public class RobotActions extends RobotHardware {
     public static final double GATE_OPEN_POS = 0.25;
     public static final double GATE_CLOSED_POS = 0.5;
 
+    // --- AUTONOMOUS CONSTANTS ---
+    public static final double DRIVE_SPEED = 0.5;
+    public static final double TURN_SPEED = 0.5;
+
+    // --- SIDE LAUNCH AUTO CONSTANTS (BlueSideLaunchAuto / RedSideLaunchAuto) ---
+    public static final long LAUNCH_DRIVE_FORWARD_MS = 2300;
+    public static final long LAUNCH_TURN_TO_BASKET_MS = 200;
+    public static final long LAUNCH_TURN_TO_PARK_MS = 380;
+    public static final long LAUNCH_BACKUP_MS = 1400;
+    public static final long LAUNCH_PARK_TURN_MS = 600;
+    public static final long LAUNCH_PARK_FORWARD_MS = 800;
+
+    // --- GOAL SIDE AUTO CONSTANTS (BlueGoalSideLaunchAuto / RedGoalSideLaunchAuto)
+    // ---
+    public static final long GOAL_DRIVE_BACK_MS = 1200;
+    public static final long GOAL_PARK_STRAFE_MS = 1300;
+
     /**
      * Constructor for the RobotActions class.
      * 

@@ -30,19 +30,18 @@ public class RedGoalSideLaunchAuto extends LinearOpMode {
         if (opModeIsActive()) {
 
             // 1. Move backward off the launch zone
-            // Original: Power -0.5 for 1500ms
-            robot.driveStraight(-0.5, 1200);
+            // Original: Power -0.5 for 1200ms
+            robot.driveStraight(-RobotActions.DRIVE_SPEED, RobotActions.GOAL_DRIVE_BACK_MS);
 
             // 2. Stop (implicit in driveStraight)
 
             // 3. Spin up flywheel and Fire 3 balls
-            // Original used 0.8 power and sleep 1570.
             // Using standardized velocity and shooting logic.
             robot.shootBalls(3, RobotActions.FLYWHEEL_VELOCITY);
 
             // 4. Move onto the launch zone from sweet spot (Park)
             // Strafing RIGHT to park (mirrors Blue's Left strafe)
-            robot.strafe(0.5, 1300);
+            robot.strafe(RobotActions.DRIVE_SPEED, RobotActions.GOAL_PARK_STRAFE_MS);
 
             // End of auto
             sleep(1000);
